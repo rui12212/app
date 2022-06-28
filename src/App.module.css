@@ -1,0 +1,9 @@
+/* 特定のFonttを使用できるようにimport */
+@import url("http://fonts.googleapis.com/css2?family=Playball&dispay=swap");
+* {
+  margin: 0;
+}
+.app {
+  background-color: #fafafa;
+  height: 100%;
+}
