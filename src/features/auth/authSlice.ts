@@ -2,13 +2,13 @@ import { createSlice, createAsyncThunk} from '@reduxjs/toolkit';
 // 非同期関数しようのためにcrreate...thunkを追加
 import { RootState } from '../../app/store';
 // axiosの追加
-import axios from "axios"
+import axios from "axios";
 // types.tsでデータ方を定義したものをっ使えるようにimport
-import {PROPS_AUTHEN, PROPS_PROFILE, PROPS_NICKNAME } from "../types";
+import {　PROPS_AUTHEN, PROPS_PROFILE, PROPS_NICKNAME } from "../types";
 
 // django API-ENdpointのURL（ここに接続すればっカスタムで作ったDjangoAPPにつなげる）を指定
 // 指定の仕方は、「.env」の中にURLを指定することでできる
-const apiURL = process.env.REACT_APP_DEV_API_URL
+const apiURL = process.env.REACT_APP_DEV_API_URL;
 // この後tesconffigのしたの空白で右クリックし、「.env」という環境変数（変数やデータ型など、あるルールが指定sれている部屋）を定義するファイルを作成
 
 // 下記は非同期関数のアクション（JWTトークン取得のReact操作）
@@ -19,9 +19,9 @@ export const fetchAsyncLogin = createAsyncThunk(
   // 非同期形のAsyncにAwaitを組み合わせることで同期系に変換
   // Rreactから引数を読み込み、Authenに入れる。
   async (authen: PROPS_AUTHEN)=>{
-    const res = await axios.post('${apiURL}authen/jwt/create', authen, {
+    const res = await axios.post(`${apiURL}authen/jwt/create`, authen, {
       headers: {
-        "Content-Type": "applocation/json",
+        "Content-Type": "application/json",
       },
     });
     return res.data;
@@ -43,7 +43,7 @@ export const fetchAsyncRegister = createAsyncThunk(
 
 // 次はプロフィールを新規で作る関数
 export const fetchAsyncCreateProf = createAsyncThunk(
-  "profile//post",
+  "profile/post",
   async (nickName: PROPS_NICKNAME) => {
     const res = await axios.post(`${apiURL}api/profile/` , nickName,{
       headers: {
@@ -66,8 +66,8 @@ export const fetchAsyncUpdateProf = createAsyncThunk(
       uploadData,
       {
         headers: {
-          "Content-Type": "aaplication/json",
-          Authrization: `JWT ${localStorage.localJWT}`,
+          "Content-Type": "application/json",
+          Authorization: `JWT ${localStorage.localJWT}`,
         },
       }
     );
@@ -78,23 +78,23 @@ export const fetchAsyncUpdateProf = createAsyncThunk(
 export const fetchAsyncGetMyProf = createAsyncThunk("profile/get", async () => {
   const res = await axios.get(`${apiURL}api/myprofile/`, {
     headers: {
-      Authrization: `JWT ${localStorage.localJWT}`,
+      Authorization: `JWT ${localStorage.localJWT}`,
     },
   });
   return res.data[0];
 });
 
-export const fetchAsyncGetProfs = createAsyncThunk("proofile/get", async () => {
+export const fetchAsyncGetProfs = createAsyncThunk("profiles/get", async () => {
   const res = await axios.get(`${apiURL}api/profile/`, {
     headers: {
-      Authrization: `JWT ${localStorage.localJWT}`,
+      Authorization: `JWT ${localStorage.localJWT}`,
     },
   });
   return res.data;
 });
 
 export const authSlice = createSlice({
-  name: 'auth',
+  name: "auth",
   // initialstateとはReduxの、認証における一番最初の状態。OpenSignIn、サインインしていないUserがアクセスした時にModelがじどうで表示されるように設定
   initialState: {
     // Modal(ログインボタンを押した時などの小窓、Emailとかパスを打つやつ)が表示される、されないをTrue/False管理。
@@ -181,7 +181,7 @@ export const authSlice = createSlice({
     builder.addCase(fetchAsyncGetMyProf.fulfilled, (state,action) => {
       state.myprofile = action.payload;
     });
-    builder.addCase(fetchAsyncGetMyProf.fulfilled, (state,action) => {
+    builder.addCase(fetchAsyncGetProfs.fulfilled, (state,action) => {
       state.profiles = action.payload;
     });
     builder.addCase(fetchAsyncUpdateProf.fulfilled, (state,action) => {
@@ -195,17 +195,27 @@ export const authSlice = createSlice({
 
 // 上記の内容（REducer側の内容を）を実際に使用できるように、Exportしていく（下記を書き換えていく）
 // AuthSliceに変更。そして、（）の中身を上記InsittialStateで定義した関数に書き換え
-export const { fetchCredStart, fetchCredEnd, setOpenSignIn, resetOpenSignIn, setOpenSignUp, resetOpenSignUp, setOpenProfile, resetOpenProfile, editNickname} = authSlice.actions;
+export const { 
+  fetchCredStart, 
+  fetchCredEnd, 
+  setOpenSignIn, 
+  resetOpenSignIn, 
+  setOpenSignUp, 
+  resetOpenSignUp, 
+  setOpenProfile, 
+  resetOpenProfile, 
+  editNickname,
+} = authSlice.actions;
 // 下記はstoreの中のisLoadingAuthという関数を返してくれ流関数。authの部分はstore.tsのauthと名前が一緒である必要あり
 export const selectIsLoadingAuth = (state: RootState) =>
-  state.auth.isLoadingAuth
+  state.auth.isLoadingAuth;
 
 // 下記はStateの状態を確認するためのもの、RootStateでまとめて状態を確認できる
 export const selectOpenSignIn = (state: RootState) => state.auth.openSignIn;
-export const selctOpenSignUp = (state: RootState) => state.auth.openSignUp;
-export const selectOpenProfie = (state: RootState) => state.auth.openProfile;
+export const selectOpenSignUp = (state: RootState) => state.auth.openSignUp;
+export const selectOpenProfile = (state: RootState) => state.auth.openProfile;
 export const selectProfile = (state: RootState) => state.auth.myprofile;
-export const selectProfies = (state: RootState) => state.auth.profiles;
+export const selectProfiles = (state: RootState) => state.auth.profiles;
 
 // 下記もSlice情報もAuthに変更
 export default authSlice.reducer;

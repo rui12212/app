@@ -10,14 +10,14 @@ export interface File extends Blob{
 // 下記3つは認証（AUTH）のSliceで使用する。頻繁に使用するものであるため、ここで定義をしておくことで、後で参照するのが楽になる
 // autheSlice.ts
 // すでにPROPS_AUTHENは機能として存在している。それを呼び出しているだけ。
-export interface PROPS_AUTHEN{　
+export interface PROPS_AUTHEN {　
     // #e-mail・passwordとも文字列でるため、strとして定義
     email: string;　
     password: string;　
 }
 
 // カスタムのデータタイプを作っている
-export interface PROPS_PROFILE{ 
+export interface PROPS_PROFILE { 
     id: number;
     nickName: string;
     // イメージ画像は無い場合もあるので、それを許容するためにNullも許可している
@@ -26,4 +26,30 @@ export interface PROPS_PROFILE{
 
 export interface PROPS_NICKNAME{
     nickName: string;
+}
+
+export interface PROPS_NEWPOST {
+    title: string;
+    img: File | null;
+}
+
+export interface PROPS_LIKED {
+    id: number;
+    title: string;
+    current: number[];
+    new: number;
+}
+
+export interface PROPS_COMMENT {
+    text: string;
+    post: number;
+}
+
+export interface PROPS_POST {
+    postId: number;
+    loginId: number;
+    userPost: number;
+    title: string;
+    imageUrl: string;
+    liked: number[];
 }
