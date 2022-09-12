@@ -1,10 +1,12 @@
+// Counterをしい要していないため、削除
 import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit';
 import authReducer from "../features/auth/authSlice";
-// import postReducer from "../features/post/postSlice";
+import postReducer from "../features/post/postSlice";
+// 下記の中にpostreducerを追加
 export const store = configureStore({
   reducer: {
     auth: authReducer,
-    // post: postReducer,
+    post: postReducer,
   },
 });
 

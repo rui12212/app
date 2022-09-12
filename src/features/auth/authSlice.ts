@@ -4,11 +4,11 @@ import { RootState } from '../../app/store';
 // axiosの追加
 import axios from "axios";
 // types.tsでデータ方を定義したものをっ使えるようにimport
-import {　PROPS_AUTHEN, PROPS_PROFILE, PROPS_NICKNAME } from "../types";
+import { PROPS_AUTHEN, PROPS_PROFILE, PROPS_NICKNAME } from "../types";
 
 // django API-ENdpointのURL（ここに接続すればっカスタムで作ったDjangoAPPにつなげる）を指定
 // 指定の仕方は、「.env」の中にURLを指定することでできる
-const apiURL = process.env.REACT_APP_DEV_API_URL;
+const apiUrl = process.env.REACT_APP_DEV_API_URL;
 // この後tesconffigのしたの空白で右クリックし、「.env」という環境変数（変数やデータ型など、あるルールが指定sれている部屋）を定義するファイルを作成
 
 // 下記は非同期関数のアクション（JWTトークン取得のReact操作）
@@ -19,7 +19,7 @@ export const fetchAsyncLogin = createAsyncThunk(
   // 非同期形のAsyncにAwaitを組み合わせることで同期系に変換
   // Rreactから引数を読み込み、Authenに入れる。
   async (authen: PROPS_AUTHEN)=>{
-    const res = await axios.post(`${apiURL}authen/jwt/create`, authen, {
+    const res = await axios.post(`${apiUrl}authen/jwt/create`, authen, {
       headers: {
         "Content-Type": "application/json",
       },
@@ -32,7 +32,7 @@ export const fetchAsyncLogin = createAsyncThunk(
 export const fetchAsyncRegister = createAsyncThunk( 
   "auth/register",
   async (auth: PROPS_AUTHEN) => {
-    const res = await axios.post(`${apiURL}api/register/`, auth,{
+    const res = await axios.post(`${apiUrl}api/register/`, auth,{
       headers: {
         "Content-Type": "application/json",
       },
@@ -45,7 +45,7 @@ export const fetchAsyncRegister = createAsyncThunk(
 export const fetchAsyncCreateProf = createAsyncThunk(
   "profile/post",
   async (nickName: PROPS_NICKNAME) => {
-    const res = await axios.post(`${apiURL}api/profile/` , nickName,{
+    const res = await axios.post(`${apiUrl}api/profile/` , nickName,{
       headers: {
         "Content-Type": "application/json",
         Authorization: `JWT ${localStorage.localJWT}`,
@@ -62,7 +62,7 @@ export const fetchAsyncUpdateProf = createAsyncThunk(
     uploadData.append("nickName", profile.nickName);
     profile.img && uploadData.append("img", profile.img, profile.img.name);
     const res = await axios.put(
-      `${apiURL}api/profile/${profile.id}/`,
+      `${apiUrl}api/profile/${profile.id}/`,
       uploadData,
       {
         headers: {
@@ -76,7 +76,7 @@ export const fetchAsyncUpdateProf = createAsyncThunk(
 );
 
 export const fetchAsyncGetMyProf = createAsyncThunk("profile/get", async () => {
-  const res = await axios.get(`${apiURL}api/myprofile/`, {
+  const res = await axios.get(`${apiUrl}api/myprofile/`, {
     headers: {
       Authorization: `JWT ${localStorage.localJWT}`,
     },
@@ -85,7 +85,7 @@ export const fetchAsyncGetMyProf = createAsyncThunk("profile/get", async () => {
 });
 
 export const fetchAsyncGetProfs = createAsyncThunk("profiles/get", async () => {
-  const res = await axios.get(`${apiURL}api/profile/`, {
+  const res = await axios.get(`${apiUrl}api/profile/`, {
     headers: {
       Authorization: `JWT ${localStorage.localJWT}`,
     },
